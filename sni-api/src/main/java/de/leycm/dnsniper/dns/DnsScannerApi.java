@@ -26,7 +26,7 @@ public interface DnsScannerApi {
      * @return The result of the DNS scan, including records and other details.
      */
     default DnsScanResult scan(String domain) {
-        return DNSniperApiProvider.get().scan(domain);
+        return DNSniperApiProvider.get().scanDnsEntry(domain);
     }
 
 }

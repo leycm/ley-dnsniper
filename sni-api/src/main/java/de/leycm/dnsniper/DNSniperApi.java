@@ -13,7 +13,9 @@ package de.leycm.dnsniper;
  import de.leycm.dnsniper.dns.DnsScanResult;
  import de.leycm.dnsniper.port.PortScanResult;
 
+ import java.io.IOException;
  import java.net.InetAddress;
+ import java.util.List;
  import java.util.function.Predicate;
 
  /**
@@ -50,6 +52,8 @@ package de.leycm.dnsniper;
       */
      PortScanResult scanAllPorts(InetAddress address, Predicate<Integer> portFilter);
 
-      DnsScanResult scan(String domain);
+     DnsScanResult scanDnsEntry(String domain);
+
+     List<String> scanSubDomain(String domain);
 
  }

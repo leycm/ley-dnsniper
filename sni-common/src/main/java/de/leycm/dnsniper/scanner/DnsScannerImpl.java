@@ -8,7 +8,7 @@
  * Copyright (c) maintainers <br>
  * Copyright (c) contributors
  */
-package de.leycm.dnsniper.impl;
+package de.leycm.dnsniper.scanner;
 
 import de.leycm.dnsniper.dns.DnsRecord;
 import de.leycm.dnsniper.dns.DnsScanResult;

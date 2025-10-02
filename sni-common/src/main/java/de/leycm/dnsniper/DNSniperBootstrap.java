@@ -11,11 +11,14 @@
 package de.leycm.dnsniper;
 
 import de.leycm.dnsniper.dns.DnsScanResult;
-import de.leycm.dnsniper.impl.DnsScannerImpl;
-import de.leycm.dnsniper.impl.PortScannerImpl;
+import de.leycm.dnsniper.scanner.DnsScannerImpl;
+import de.leycm.dnsniper.scanner.PortScannerImpl;
 import de.leycm.dnsniper.port.PortScanResult;
+import de.leycm.dnsniper.scanner.SubdomainScannerImpl;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -31,6 +34,8 @@ public class DNSniperBootstrap implements DNSniperApi {
     PortScannerImpl portScanner = new PortScannerImpl();
     // Instance of DnsScannerImpl used for performing dns lookups
     DnsScannerImpl dnsScanner = new DnsScannerImpl();
+    // Instance of SubdomainScannerImpl used for performing subdomain scans
+    SubdomainScannerImpl subdomainScanner = new SubdomainScannerImpl();
 
     /**
      * Constructs a new DNSniperBootstrap and registers this instance with the {@link DNSniperApiProvider}.
@@ -38,7 +43,7 @@ public class DNSniperBootstrap implements DNSniperApi {
      * This ensures that the API implementation is available for use throughout the application.
      * </p>
      */
-    public DNSniperBootstrap() {
+    public DNSniperBootstrap() throws IOException {
         DNSniperApiProvider.register(this);
     }
 
@@ -69,8 +74,13 @@ public class DNSniperBootstrap implements DNSniperApi {
     }
 
     @Override
-    public DnsScanResult scan(String domain) {
-        return null;
+    public DnsScanResult scanDnsEntry(String domain) {
+        return dnsScanner.scan(domain);
+    }
+
+    @Override
+    public List<String> scanSubDomain(String domain) {
+        return subdomainScanner.scanDomain(domain);
     }
 
     /**

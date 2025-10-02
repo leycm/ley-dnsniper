@@ -193,13 +193,11 @@ public class DNSniperGuiClient extends JFrame {
             ScanData data = new ScanData(subdomain);
             scanResults.put(subdomain, data);
 
-            SwingUtilities.invokeLater(() -> {
-                subdomainModel.addRow(new Object[]{
-                        subdomain,
-                        "Discovered",
-                        Instant.now().toString()
-                });
-            });
+            SwingUtilities.invokeLater(() -> subdomainModel.addRow(new Object[]{
+                    subdomain,
+                    "Discovered",
+                    Instant.now().toString()
+            }));
         }
 
         updateStatus("Scanning DNS entries...");
@@ -211,16 +209,14 @@ public class DNSniperGuiClient extends JFrame {
 
                 for (DnsRecord record : dnsResult.records()) {
                     String nsInfo = formatNameServerInfo(dnsResult.nameServerChecks());
-                    SwingUtilities.invokeLater(() -> {
-                        dnsModel.addRow(new Object[]{
-                                subdomain,
-                                record.type(),
-                                record.ttl(),
-                                record.data(),
-                                nsInfo,
-                                countResponsiveNS(dnsResult.nameServerChecks())
-                        });
-                    });
+                    SwingUtilities.invokeLater(() -> dnsModel.addRow(new Object[]{
+                            subdomain,
+                            record.type(),
+                            record.ttl(),
+                            record.data(),
+                            nsInfo,
+                            countResponsiveNS(dnsResult.nameServerChecks())
+                    }));
                 }
 
                 processed++;
@@ -232,7 +228,6 @@ public class DNSniperGuiClient extends JFrame {
             }
         }
 
-        // Step 3: Scan ports for all discovered IPs
         updateStatus("Scanning ports...");
         Set<InetAddress> uniqueIPs = extractUniqueIPs();
 
@@ -242,17 +237,14 @@ public class DNSniperGuiClient extends JFrame {
                 PortScanResult portResult = api.scanAllPorts(ip);
 
                 for (PortResult port : portResult.ports()) {
-                    SwingUtilities.invokeLater(() -> {
-                        portModel.addRow(new Object[]{
-                                ip.getHostAddress(),
-                                port.port(),
-                                port.status(),
-                                port.pingMs()
-                        });
-                    });
+                    SwingUtilities.invokeLater(() -> portModel.addRow(new Object[]{
+                            ip.getHostAddress(),
+                            port.port(),
+                            port.status(),
+                            port.pingMs()
+                    }));
                 }
 
-                // Store port results
                 for (Map.Entry<String, ScanData> entry : scanResults.entrySet()) {
                     if (entry.getValue().containsIP(ip)) {
                         entry.getValue().addPortScanResult(portResult);
